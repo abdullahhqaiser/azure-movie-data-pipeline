@@ -40,11 +40,14 @@ if __name__ == "__main__":
     initial_page = config["initial_page"]
     current_page = config["current_page"]
 
-    start_page = get_total_pages(
+    max_page = get_total_pages(
         movies_per_page=MOVIES_PER_PAGE, order_by=ORDER_BY, yts_url=YTS_URL
     )
-    if current_page < start_page:
-        current_page = start_page
+    if current_page < max_page:
+        current_page = max_page
+        print(f"current page {current_page}")
+
+    any_movies_found = False  # Flag to track if any movies were found
 
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = {
@@ -55,22 +58,30 @@ if __name__ == "__main__":
                 ORDER_BY,
                 YTS_URL,
             ): page
-            for page in range(initial_page, current_page + 1)
+            for page in range(initial_page + 1, current_page + 1)
         }
-        for page in range(initial_page, current_page + 1):
+        for page in range(initial_page + 1, current_page + 1):
             logging.info(f"Thread created for page: {page}")
 
         for future in as_completed(futures):
             page_num = futures[future]
             try:
                 movies = future.result()
+                if movies:  # Check if movies were retrieved
+                    any_movies_found = True
                 logging.info(f"Page {page_num}: {len(movies)} movies retrieved")
                 # Process data here (e.g., save to DB/file)
             except Exception as e:
                 logging.error(f"Page {page_num} failed: {str(e)}")
+                break
 
-    print(len(futures))
-    config["initial_page"] = current_page + 1
-    config["current_page"] = current_page + 1
-    with open("params.yaml", "w") as file:
-        yaml.safe_dump(config, file, default_flow_style=False)
+        # Update config only if movies were found
+        if any_movies_found:
+            config["initial_page"] = current_page + 1
+            config["current_page"] = current_page + 1
+            logging.info(f"Updated pages to {current_page + 1}")
+        else:
+            logging.info("No new movies found; pages not updated.")
+
+        with open("params.yaml", "w") as file:
+            yaml.safe_dump(config, file, default_flow_style=False)
