@@ -121,4 +121,5 @@
 # MAGIC drop table if exists yts_catalog.gold.dim_rating;
 # MAGIC drop table if exists yts_catalog.gold.dim_released_year;
 # MAGIC drop table if exists yts_catalog.gold.genre_junction;
-# MAGIC
+# MAGIC drop table if exists yts_catalog.gold.fact_movies;
+# MAGIC drop table if exists yts_catalog.silver.cleaned_data;

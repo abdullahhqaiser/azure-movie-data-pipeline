@@ -7,7 +7,7 @@ import json
 
 # COMMAND ----------
 
-path = "abfss://configs@ytsstorageaccount.dfs.core.windows.net/config.yaml"
+path = "abfss://configs@ytsstorageaccount.dfs.core.windows.net/config.json"
 file_contents = dbutils.fs.head(path)
 config = json.loads(file_contents)
 last_date = config['last_date']
@@ -20,6 +20,10 @@ df = spark.sql(f"""
           where 
           date_uploaded > '{last_date}' and date_uploaded <= (select max(date_uploaded) from yts_catalog.silver.cleaned_data)
           """)
+
+# COMMAND ----------
+
+updated_last_date = df.select(max(df['date_uploaded'])).collect()[0][0]
 
 # COMMAND ----------
 
@@ -53,6 +57,6 @@ df_target.alias("t").merge(df.alias("s"), "s.movie_id = t.movie_id").whenNotMatc
 
 # COMMAND ----------
 
-config['last_date'] = df.select(max(df['date_uploaded'])).collect()[0][0]
+config['last_date'] = updated_last_date
 config_str = json.dumps(config, indent=4)
-dbutils.fs.put(config_path, config_str, overwrite=True)
+dbutils.fs.put(path, config_str, overwrite=True)

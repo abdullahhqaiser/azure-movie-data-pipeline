@@ -60,3 +60,7 @@ df.write.format('delta')\
     .mode('append')\
     .option('path', 'abfss://silver@ytsstorageaccount.dfs.core.windows.net/cleaned_data/')\
     .saveAsTable('yts_catalog.silver.cleaned_data')
+
+# COMMAND ----------
+
+

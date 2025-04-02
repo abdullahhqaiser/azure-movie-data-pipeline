@@ -7,7 +7,7 @@ import json
 
 # COMMAND ----------
 
-path = "abfss://configs@ytsstorageaccount.dfs.core.windows.net/config.yaml"
+path = "abfss://configs@ytsstorageaccount.dfs.core.windows.net/config.json"
 file_contents = dbutils.fs.head(path)
 config = json.loads(file_contents)
 last_date = config['last_date']

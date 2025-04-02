@@ -177,12 +177,3 @@ def fetch_movies(config_path="config.json"):
 
 path = "abfss://configs@ytsstorageaccount.dfs.core.windows.net/config.json"
 fetch_movies(config_path=path)
-
-# COMMAND ----------
-
-# MAGIC %sql
-# MAGIC select count(*) from yts_catalog.bronze.raw_data
-
-# COMMAND ----------
-
-
