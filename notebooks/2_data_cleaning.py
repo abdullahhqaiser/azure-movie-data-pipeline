@@ -44,7 +44,7 @@ df = df.alias('main').join(
     col('main.description_full'),
     col('main.summary'),
     col('main.synopsis'),
-    date_format(coalesce(col('main.date_uploaded'), col('update.date_uploaded')), 'yyyy-MM-dd').alias('date_uploaded'),
+    coalesce(col('main.date_uploaded'), col('update.date_uploaded')).alias('date_uploaded'),
     coalesce(col('main.date_uploaded_unix'), col('update.date_uploaded_unix')).alias('date_uploaded_unix'),
     col('main.background_image'),
     col('main.background_image_original'),
@@ -60,7 +60,3 @@ df.write.format('delta')\
     .mode('append')\
     .option('path', 'abfss://silver@ytsstorageaccount.dfs.core.windows.net/cleaned_data/')\
     .saveAsTable('yts_catalog.silver.cleaned_data')
-
-# COMMAND ----------
-
-

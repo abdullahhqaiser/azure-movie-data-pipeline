@@ -55,7 +55,7 @@
 # MAGIC
 # MAGIC CREATE or replace table yts_catalog.gold.dim_date (
 # MAGIC   date_key INT NOT NULL,
-# MAGIC   date DATE NOT NULL,
+# MAGIC   date TIMESTAMP NOT NULL,
 # MAGIC   date_iso STRING,
 # MAGIC   date_full STRING,
 # MAGIC   day_of_week STRING,
