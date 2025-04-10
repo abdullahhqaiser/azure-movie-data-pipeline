@@ -46,7 +46,3 @@ df_new_records = df_new_records.withColumn("year_key", row_number().over(Window.
 # COMMAND ----------
 
 df_target.alias("t").merge(df_new_records.alias("s"), "t.year = s.year").whenNotMatchedInsertAll().execute()
-
-# COMMAND ----------
-
-

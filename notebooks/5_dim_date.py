@@ -16,7 +16,7 @@ last_date = config['last_date']
 
 df_source = spark.sql(f"""
                       select
-            distinct(date_uploaded) as date    
+            distinct(date(date_uploaded)) as date    
           from 
           yts_catalog.silver.cleaned_data
           where 

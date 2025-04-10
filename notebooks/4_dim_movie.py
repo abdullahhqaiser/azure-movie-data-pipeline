@@ -14,10 +14,6 @@ last_date = config['last_date']
 
 # COMMAND ----------
 
-last_date = '2025-04-02'
-
-# COMMAND ----------
-
 df_source = spark.sql(f"""
           select distinct(slug) as slug, url, title, description_full, summary, synopsis, background_image_original, large_cover_image
           from 

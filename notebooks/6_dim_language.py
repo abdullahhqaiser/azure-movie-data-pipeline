@@ -41,7 +41,3 @@ df_new_records = df_new_records.withColumn("language_key", row_number().over(Win
 # COMMAND ----------
 
 df_target.alias("t").merge(df_new_records.alias("s"), "t.language = s.language").whenNotMatchedInsertAll().execute()
-
-# COMMAND ----------
-
-

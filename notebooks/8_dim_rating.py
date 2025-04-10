@@ -41,7 +41,3 @@ df_new_records = df_new_records.withColumn("rating_key", row_number().over(Windo
 # COMMAND ----------
 
 df_target.alias("t").merge(df_new_records.alias("s"), "t.rating = s.rating").whenNotMatchedInsertAll().execute()
-
-# COMMAND ----------
-
-
